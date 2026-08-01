@@ -1,0 +1,323 @@
+<!-- ============================================================
+     POM.XML – Library Management System
+     Project: Desktop Application for Automated Software Testing
+     Author: Opoka JM Silvio
+     Academic Year: 2025/2026
+     ============================================================ -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <!-- ============================================================
+         PROJECT IDENTIFICATION – MY MAVEN COORDINATES
+         ============================================================ -->
+
+    <!-- modelVersion: always 4.0.0 for Maven 2+ projects -->
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Group ID: reverse domain name (my package) -->
+    <groupId>com.library</groupId>
+
+    <!-- Artifact ID: the name of my JAR file -->
+    <artifactId>LibraryManagementSystem</artifactId>
+
+    <!-- Version: my project version -->
+    <version>0.0.1</version>
+
+    <!-- Packaging: jar = desktop application (not a web app) -->
+    <packaging>jar</packaging>
+
+    <!-- Human-readable project name -->
+    <name>Library Management System</name>
+
+    <!-- Short description of what this project does -->
+    <description>
+        A desktop application for managing library operations, developed as part of the 
+        Automated Software Testing course (Module 2025/2026) by Opoka JM Silvio.
+    </description>
+
+    <!-- ============================================================
+         PROPERTIES – GLOBAL SETTINGS USED THROUGHOUT THE POM
+         ============================================================ -->
+
+    <properties>
+        <!-- Java version – must be one of the LTS versions: 8, 11, 17, or 21 -->
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+
+        <!-- Character encoding – always UTF-8 to avoid locale issues -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- ============================================================
+             DEPENDENCY VERSION NUMBERS – CENTRALISED FOR EASY MAINTENANCE
+             ============================================================ -->
+
+        <!-- Testing frameworks -->
+        <junit.version>5.10.0</junit.version>       <!-- JUnit 5 for unit tests -->
+        <mockito.version>5.6.0</mockito.version>    <!-- Mockito for mocking in tests -->
+
+        <!-- Database & integration testing -->
+        <postgresql.version>42.6.0</postgresql.version> <!-- PostgreSQL JDBC driver -->
+        <testcontainers.version>1.19.3</testcontainers.version> <!-- Docker containers in tests -->
+
+        <!-- Additional tools & frameworks -->
+        <guice.version>7.0.0</guice.version>        <!-- Google Guice for dependency injection -->
+        <assertj-swing.version>3.17.1</assertj-swing.version> <!-- UI testing with AssertJ Swing -->
+        <cucumber.version>7.14.0</cucumber.version> <!-- Cucumber for BDD / E2E testing -->
+
+        <!-- Code quality & analysis -->
+        <pitest.version>1.15.0</pitest.version>     <!-- PIT for mutation testing -->
+        <jacoco.version>0.8.11</jacoco.version>     <!-- JaCoCo for code coverage -->
+    </properties>
+
+    <!-- ============================================================
+         DEPENDENCIES – ALL THE LIBRARIES MY PROJECT NEEDS
+         ============================================================ -->
+
+    <dependencies>
+
+        <!-- ============================================================
+             TESTING FRAMEWORKS
+             ============================================================ -->
+
+        <!-- JUnit 5 – the main framework for writing unit tests -->
+        <!-- scope = test: only used during test execution, not packaged in the final JAR -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Mockito Core – for creating mock objects in unit tests -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Mockito + JUnit integration – makes Mockito work smoothly with JUnit 5 -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- ============================================================
+             DATABASE ACCESS
+             ============================================================ -->
+
+        <!-- PostgreSQL JDBC Driver – connects my Java code to the PostgreSQL database -->
+        <!-- scope = compile (default): always included in the final JAR -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
+
+        <!-- ============================================================
+             INTEGRATION TESTING WITH DOCKER CONTAINERS
+             ============================================================ -->
+
+        <!-- Testcontainers Core – lets me run real Docker containers during tests -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Testcontainers + PostgreSQL – spins up a real PostgreSQL instance for integration tests -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Testcontainers + JUnit – simplifies integration with JUnit 5 lifecycle -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- ============================================================
+             DEPENDENCY INJECTION – HIGH RATING FEATURE
+             ============================================================ -->
+
+        <!-- Google Guice – a lightweight dependency injection framework -->
+        <!-- I use this to make my application more modular and testable -->
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>${guice.version}</version>
+        </dependency>
+
+        <!-- ============================================================
+             UI TESTING
+             ============================================================ -->
+
+        <!-- AssertJ Swing – a library for testing Swing GUI applications -->
+        <!-- It allows me to simulate user interactions with the UI -->
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-swing-junit</artifactId>
+            <version>${assertj-swing.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- ============================================================
+             END-TO-END TESTING (BEHAVIOUR-DRIVEN DEVELOPMENT)
+             ============================================================ -->
+
+        <!-- Cucumber Java – lets me write BDD-style tests using Gherkin (Given/When/Then) -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Cucumber + JUnit integration – runs my Cucumber scenarios as JUnit tests -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit-platform-engine</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- ============================================================
+             SECURITY
+             ============================================================ -->
+
+        <!-- BCrypt – a secure hashing algorithm for storing passwords -->
+        <!-- I never store plain-text passwords; I store their BCrypt hashes instead -->
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+        </dependency>
+
+    </dependencies>
+
+    <!-- ============================================================
+         BUILD PLUGINS – TOOLS FOR COMPILING, TESTING, AND REPORTING
+         ============================================================ -->
+
+    <build>
+        <plugins>
+
+            <!-- ============================================================
+                 MAVEN COMPILER PLUGIN – COMPILES MY JAVA CODE
+                 ============================================================ -->
+
+            <!-- Tells Maven to compile my code using Java 17 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>17</source>   <!-- the Java version my source code uses -->
+                    <target>17</target>   <!-- the Java version my bytecode targets -->
+                </configuration>
+            </plugin>
+
+            <!-- ============================================================
+                 MAVEN SUREFIRE PLUGIN – RUNS MY UNIT TESTS (*Test.java)
+                 ============================================================ -->
+
+            <!-- Executes all JUnit unit tests during the `mvn test` phase -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.1.2</version>
+            </plugin>
+
+            <!-- ============================================================
+                 MAVEN FAILSAFE PLUGIN – RUNS MY INTEGRATION TESTS (*IT.java)
+                 ============================================================ -->
+
+            <!-- Executes integration tests (which usually require a real database via Testcontainers) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.1.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal> <!-- runs the *IT.java tests -->
+                            <goal>verify</goal>           <!-- verifies that all integration tests passed -->
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- ============================================================
+                 JACOCO PLUGIN – MEASURES CODE COVERAGE (100% REQUIRED!)
+                 ============================================================ -->
+
+            <!-- JaCoCo tells me how much of my code is exercised by my test suite -->
+            <!-- My goal is to achieve 100% line and branch coverage -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <!-- Prepares the JaCoCo agent to collect coverage data -->
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <!-- Generates the coverage report (HTML) after the tests run -->
+                    <execution>
+                        <id>report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- ============================================================
+                 PIT PLUGIN – MUTATION TESTING (0 SURVIVORS REQUIRED!)
+                 ============================================================ -->
+
+            <!-- PIT mutates my code (makes small changes) and checks if my tests detect them -->
+            <!-- If a mutant survives (all tests pass despite the change), my tests are weak -->
+            <!-- I must kill all mutants to prove my tests are thorough -->
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <version>${pitest.version}</version>
+                <configuration>
+                    <!-- I focus mutation testing on my core business logic (domain and service layers) -->
+                    <targetClasses>
+                        <param>com.library.domain.*</param>
+                        <param>com.library.service.*</param>
+                    </targetClasses>
+                    <!-- Run mutation tests against all my test classes -->
+                    <targetTests>
+                        <param>com.library.*</param>
+                    </targetTests>
+                    <!-- Mutators: the types of code changes PIT should try -->
+                    <mutators>
+                        <mutator>DEFAULTS</mutator>
+                    </mutators>
+                    <!-- Output formats – I can read the HTML report in my browser -->
+                    <outputFormats>
+                        <format>HTML</format>
+                        <format>XML</format>
+                    </outputFormats>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
