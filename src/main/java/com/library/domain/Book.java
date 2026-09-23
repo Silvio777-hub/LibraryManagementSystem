@@ -16,6 +16,6 @@ public record Book(String id, String title, String author, String isbn, BookStat
 	}
 
 	public boolean isAvailable() {
-		return false;
+		return status == BookStatus.AVAILABLE;
 	}
 }
